@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="meatbook in meatbookFiles" :key="meatbook">
-      <router-link :to="{name: 'MeatEditor',params:{meatbook_name:meat}}">{{meatbook}}</router-link>
+      <router-link :to="{name: 'MeatEditor',params:{meatbook_name:meatbook}}">{{meatbook}}</router-link>
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@ export default {
         this.meatbookFiles = res.data['list']
       })
     return {
-      meatbookFiles: []
+      meatbookFiles: ['test']
     }
   }
 }

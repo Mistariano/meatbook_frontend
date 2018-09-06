@@ -18,7 +18,7 @@ export default {
         this.meatbook = res.data['meatbook']
       })
     return {
-      meatbook: [{text: '# test', is_editing: true}, {text: '# test 2', is_editing: false}]
+      meatbook: [{text: '# test\n\n$\\iint$', is_editing: true}, {text: '# test 2\n$$ \\oint $$', is_editing: false}]
     }
   },
   methods: {
