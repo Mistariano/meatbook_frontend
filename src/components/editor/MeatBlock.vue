@@ -16,11 +16,6 @@ import marked from 'marked'
 export default {
   name: 'MeatBlock',
   props: ['meat'],
-  data () {
-    return {
-      textareaRows: 1
-    }
-  },
   computed: {
     meatText: {
       get () {
@@ -61,13 +56,7 @@ export default {
     },
     autoSave () {
     },
-    // referenced from the source code of vue-mathjax
-    // https://github.com/justforuse/vue-mathjax.git
-    renderContent () {
-      this.$refs.meatRendered.htmlContent = this.markedText
-    },
     renderMathJax () {
-      this.renderContent()
       if (window.MathJax) {
         window.MathJax.Hub.Config({
           tex2jax: {
@@ -100,6 +89,10 @@ export default {
     meatText () {
       this.resizeTextarea()
     }
+  },
+  mounted () {
+    this.resizeTextarea()
+    this.renderMathJax()
   }
 }
 </script>

@@ -10,13 +10,15 @@
 export default {
   name: 'MeatPicker',
   data () {
+    return {
+      meatbookFiles: ['test']
+    }
+  },
+  mounted () {
     this.$axios.get('/api/meatbook/list/')
       .then(res => {
         this.meatbookFiles = res.data['list']
       })
-    return {
-      meatbookFiles: ['test']
-    }
   }
 }
 </script>
