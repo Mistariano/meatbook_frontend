@@ -2,7 +2,7 @@
   <div>
     <div class="meat-edit-area">
       <div v-for="meat in meatbook" :key="meat.id">
-        <MeatBlock :meat="meat"></MeatBlock>
+        <MeatBlock :meat="meat" @save="onSave"></MeatBlock>
       </div>
     </div>
   </div>
@@ -26,12 +26,20 @@ export default {
         this.meatbook = res.data
         this.renderMathJax()
       })
-  }
+  },
+  methods: {
+    onSave (meatName) {
+      console.log(meatName)
+      console.log(this.meatbook[meatName].text)
+      this.$axios.post('/api/meatbook/' + this.meatbook_name + '/', this.meatbook[meatName])
+    }
+  },
+  watch: {}
 }
 </script>
 
 <style scoped>
-.meat-edit-area{
+  .meat-edit-area {
 
-}
+  }
 </style>

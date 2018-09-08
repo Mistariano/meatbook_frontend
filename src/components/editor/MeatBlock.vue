@@ -5,9 +5,9 @@
                 @keydown.shift.enter="onShiftEnter()"
                 @input="onInput()"></textarea>
     </div>
-    <!--</div>-->
     <div class="meat-block-rendered" ref="meatRendered" v-show="!meatIsEditing" @dblclick="onDoubleClick()"
-         v-html="markedText" tabindex="0"></div>
+         v-html="markedText" tabindex="0">
+    </div>
   </div>
 </template>
 <script>
@@ -47,6 +47,7 @@ export default {
       ])
       this.meatIsEditing = false
       this.renderMathJax()
+      this.$emit('save', this.meat.name)
     },
     onDoubleClick: function () {
       this.meatIsEditing = true
@@ -110,11 +111,13 @@ export default {
     margin: 10px;
     width: 100%;
   }
-
+  .meat-block-rendered{
+    padding: 10px
+  }
   .meat-block-rendered:focus {
     border: blue 1px solid;
     outline: 0;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6)
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
   }
 </style>
