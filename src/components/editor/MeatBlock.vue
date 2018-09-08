@@ -85,15 +85,13 @@ export default {
       this.$refs.meatTextarea.style.height = this.$refs.meatTextarea.scrollHeight + 'px'
     }
   },
-  watch: {
-    meatText () {
-      this.resizeTextarea()
-      this.renderMathJax()
-    }
-  },
+
   mounted () {
     this.resizeTextarea()
     this.renderMathJax()
+  },
+  updated () {
+    this.resizeTextarea()
   }
 }
 </script>
