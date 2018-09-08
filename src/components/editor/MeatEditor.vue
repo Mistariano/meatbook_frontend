@@ -29,8 +29,6 @@ export default {
   },
   methods: {
     onSave (meatName) {
-      console.log(meatName)
-      console.log(this.meatbook[meatName].text)
       this.$axios.post('/api/meatbook/' + this.meatbook_name + '/', this.meatbook[meatName])
     }
   },
