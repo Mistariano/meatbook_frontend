@@ -2,7 +2,9 @@
   <div>
     <div class="meat-block-textarea-wrapper" v-show="meatIsEditing">
       <textarea class="meat-block-textarea" ref="meatTextarea" v-model="meatText" title="text"
-                @keydown.shift.enter="onShiftEnter()" @keydown="onKey"></textarea>
+                @keydown.shift.enter="onShiftEnter()"
+                @keydown.ctrl.z="onCtrlZ()"
+                @keydown="onKey"></textarea>
     </div>
     <div class="meat-block-rendered" ref="meatRendered" v-show="!meatIsEditing" @dblclick="onDoubleClick()"
          v-html="markedText" tabindex="0">
@@ -52,13 +54,14 @@ export default {
       this.meatIsEditing = true
       this.save()
     },
+    onCtrlZ () {
+      this.meatText = this.textHistory.pop()
+    },
     onKey (e) {
       if (e.key.length === 1 && /[0-9a-z]/i.test(e.key)) {
         return
       }
-      this.history.push(this.meatText) // TODO
-      console.log(history)
-      this.save()
+      this.textHistory.push(this.meatText)
     },
     save () {
       this.$emit('save', this.meat.name)
@@ -105,7 +108,7 @@ export default {
   },
   data () {
     return {
-      history: []
+      textHistory: []
     }
   }
 }
@@ -125,9 +128,11 @@ export default {
     margin: 10px;
     width: 100%;
   }
-  .meat-block-rendered{
+
+  .meat-block-rendered {
     padding: 10px
   }
+
   .meat-block-rendered:focus {
     border: blue 1px solid;
     outline: 0;
