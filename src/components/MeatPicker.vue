@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="meat-picker">
     <div v-for="meatbook in meatbookFiles" :key="meatbook">
       <router-link :to="{name: 'MeatEditor',params:{meatbook_name:meatbook}}">{{meatbook}}</router-link>
     </div>
@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: 'Home',
+  name: 'MeatPicker',
   data () {
     this.$axios.get('/api/meatbook/list/')
       .then(res => {
@@ -22,5 +22,6 @@ export default {
 </script>
 
 <style scoped>
-
+.meat-picker{
+}
 </style>

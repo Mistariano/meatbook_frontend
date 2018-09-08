@@ -1,6 +1,5 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
+  <div id="app" class="meat-app">
     <router-view/>
   </div>
 </template>
@@ -12,4 +11,9 @@ export default {
 </script>
 
 <style>
+  .meat-app{
+    width: 75%;
+    margin: auto;
+    padding: 100px 30px;
+  }
 </style>

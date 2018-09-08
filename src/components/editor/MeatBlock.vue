@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="meat-block-textarea-wrapper">
+    <div class="meat-block-textarea-wrapper" v-show="meatIsEditing">
       <textarea class="meat-block-textarea" ref="meatTextarea" v-model="meatText" title="text"
-              @keydown.shift.enter="onShiftEnter()"
-              v-show="meatIsEditing"
-              @input="onInput()"  style="width: 100%"></textarea>
+                @keydown.shift.enter="onShiftEnter()"
+                @input="onInput()"></textarea>
     </div>
+    <!--</div>-->
     <div class="meat-block-rendered" ref="meatRendered" v-show="!meatIsEditing" @dblclick="onDoubleClick()"
          v-html="markedText" tabindex="0"></div>
   </div>
@@ -90,11 +90,15 @@ export default {
           this.$refs.meatRendered
         ])
       }
+    },
+    resizeTextarea: function () {
+      this.$refs.meatTextarea.style.height = '0px'
+      this.$refs.meatTextarea.style.height = this.$refs.meatTextarea.scrollHeight + 'px'
     }
   },
   watch: {
     meatText () {
-      this.$refs.meatTextarea.style.height = this.$refs.meatTextarea.scrollHeight + 'px'
+      this.resizeTextarea()
     }
   }
 }
@@ -103,8 +107,8 @@ export default {
   .meat-block-textarea-wrapper {
     background: #f3f3f3;
     border: gray 1px solid;
-    border-bottom: none;
   }
+
   .meat-block-textarea {
     background: transparent;
     overflow: hidden;
@@ -112,6 +116,7 @@ export default {
     padding: 0;
     border: none;
     margin: 10px;
+    width: 100%;
   }
 
   .meat-block-rendered:focus {
