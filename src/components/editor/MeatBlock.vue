@@ -88,6 +88,7 @@ export default {
   watch: {
     meatText () {
       this.resizeTextarea()
+      this.renderMathJax()
     }
   },
   mounted () {
