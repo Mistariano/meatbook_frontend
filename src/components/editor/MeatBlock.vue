@@ -2,8 +2,7 @@
   <div>
     <div class="meat-block-textarea-wrapper" v-show="meatIsEditing">
       <textarea class="meat-block-textarea" ref="meatTextarea" v-model="meatText" title="text"
-                @keydown.shift.enter="onShiftEnter()"
-                @input="onInput()"></textarea>
+                @keydown.shift.enter="onShiftEnter()"></textarea>
     </div>
     <div class="meat-block-rendered" ref="meatRendered" v-show="!meatIsEditing" @dblclick="onDoubleClick()"
          v-html="markedText" tabindex="0">
@@ -47,15 +46,14 @@ export default {
       ])
       this.meatIsEditing = false
       this.renderMathJax()
-      this.$emit('save', this.meat.name)
+      this.save()
     },
     onDoubleClick: function () {
       this.meatIsEditing = true
+      this.save()
     },
-    onInput: function () {
-      this.autoSave()
-    },
-    autoSave () {
+    save () {
+      this.$emit('save', this.meat.name)
     },
     renderMathJax () {
       if (window.MathJax) {
@@ -86,9 +84,12 @@ export default {
       this.$refs.meatTextarea.style.height = this.$refs.meatTextarea.scrollHeight + 'px'
     }
   },
-
+  watch: {
+    meatText () {
+      this.save()
+    }
+  },
   mounted () {
-    this.resizeTextarea()
     this.renderMathJax()
   },
   updated () {
