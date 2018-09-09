@@ -1,18 +1,25 @@
 <template>
-  <div>
-    <div class="meat-block-textarea-wrapper" v-show="meatIsEditing">
-      <textarea class="meat-block-textarea" ref="meatTextarea" v-model="meatText" title="text"
-                @keydown.shift.enter="onShiftEnter()"
-                @keydown.ctrl.z="onCtrlZ()"
-                @keydown="onKey"></textarea>
-    </div>
-    <div class="meat-block-rendered" ref="meatRendered" v-show="!meatIsEditing" @dblclick="onDoubleClick()"
+  <div class="meat-block-wrapper">
+    <textarea class="meat-block-textarea" v-show="meatIsEditing" ref="meatTextarea" v-model="meatText" title="text"
+              @keydown.shift.enter="onShiftEnter()"
+              @keydown.enter="onEnter()"
+    >
+    </textarea>
+    <div class="meat-block-rendered" ref="meatRendered" :style="{width:renderedWidth}" @dblclick="onDoubleClick()"
          v-html="markedText" tabindex="0">
     </div>
   </div>
 </template>
 <script>
 import marked from 'marked'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/github.css'
+
+marked.setOptions({
+  highlight: function (code) {
+    return hljs.highlightAuto(code).value
+  }
+})
 
 export default {
   name: 'MeatBlock',
@@ -36,6 +43,13 @@ export default {
         this.meat['is_editing'] = v
       }
     },
+    renderedWidth () {
+      if (this.meatIsEditing) {
+        return '45%'
+      } else {
+        return '100%'
+      }
+    },
     markedText: function () {
       return marked(this.meatText)
     }
@@ -47,8 +61,9 @@ export default {
         window.MathJax.Hub
       ])
       this.meatIsEditing = false
-      this.renderMathJax()
       this.save()
+    },
+    onEnter () {
     },
     onDoubleClick: function () {
       this.meatIsEditing = true
@@ -92,12 +107,13 @@ export default {
     },
     resizeTextarea: function () {
       this.$refs.meatTextarea.style.height = '0px'
-      this.$refs.meatTextarea.style.height = this.$refs.meatTextarea.scrollHeight + 'px'
+      this.$refs.meatTextarea.style.height = this.$refs.meatTextarea.scrollHeight - 20 + 'px'
     }
   },
   watch: {
     meatText () {
       this.save()
+      this.renderMathJax()
     }
   },
   mounted () {
@@ -114,23 +130,25 @@ export default {
 }
 </script>
 <style scoped>
-  .meat-block-textarea-wrapper {
-    background: #f3f3f3;
-    border: gray 1px solid;
-  }
-
   .meat-block-textarea {
-    background: transparent;
+    display: inline-block;
+    vertical-align: top;
+    word-wrap: break-word;
+    border: gray 1px solid;
+    background: #f3f3f3;
     overflow: hidden;
     resize: none;
-    padding: 0;
-    border: none;
-    margin: 10px;
-    width: 100%;
+    padding: 10px;
+    margin: 0;
+    width: 50%;
   }
 
   .meat-block-rendered {
-    padding: 10px
+    vertical-align: top;
+    display: inline-block;
+    padding: 10px;
+    margin: 0;
+    word-wrap: break-word;
   }
 
   .meat-block-rendered:focus {
