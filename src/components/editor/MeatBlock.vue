@@ -5,7 +5,7 @@
               @keydown.enter="onEnter()"
     >
     </textarea>
-    <div class="meat-block-rendered" ref="meatRendered" :style="{width:renderedWidth}" @dblclick="onDoubleClick()"
+    <div class="meat-block-rendered markdown-body" ref="meatRendered" :style="{width:renderedWidth}" @dblclick="onDoubleClick()"
          v-html="markedText" tabindex="0">
     </div>
   </div>
@@ -14,6 +14,7 @@
 import marked from 'marked'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
+import 'github-markdown-css/github-markdown.css'
 
 marked.setOptions({
   highlight: function (code) {
@@ -68,15 +69,6 @@ export default {
     onDoubleClick: function () {
       this.meatIsEditing = true
       this.save()
-    },
-    onCtrlZ () {
-      this.meatText = this.textHistory.pop()
-    },
-    onKey (e) {
-      if (e.key.length === 1 && /[0-9a-z]/i.test(e.key)) {
-        return
-      }
-      this.textHistory.push(this.meatText)
     },
     save () {
       this.$emit('save', this.meat.name)
