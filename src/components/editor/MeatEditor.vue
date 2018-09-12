@@ -30,6 +30,11 @@ export default {
   methods: {
     onSave (meatName) {
       this.$axios.post('/api/meatbook/' + this.meatbook_name + '/', this.meatbook[meatName])
+        .catch((res) => {
+          if (res.response.status === 400) {
+            this.$router.push({name: 'Login'})
+          }
+        })
     }
   },
   watch: {}
