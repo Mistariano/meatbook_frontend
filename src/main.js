@@ -23,6 +23,22 @@ axios.interceptors.request.use(
   }
 )
 
+axios.interceptors.response.use(
+  res => {
+    return res
+  },
+  err => {
+    switch (err.response.status) {
+      case 401:
+        console.log(router)
+        router.push({name: 'Login'})
+        break
+      default :
+    }
+    // return Promise.reject(err)
+  }
+)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

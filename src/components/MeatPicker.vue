@@ -19,11 +19,6 @@ export default {
       .then(res => {
         this.meatbookFiles = res.data['list']
       })
-      .catch((res) => {
-        if (res.response.status === 400) {
-          this.$router.push({name: 'Login'})
-        }
-      })
   }
 }
 </script>
