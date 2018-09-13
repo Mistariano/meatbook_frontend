@@ -1,6 +1,6 @@
 <template>
   <div class="meat-block-wrapper">
-    <textarea class="meat-block-textarea" v-show="meatIsEditing" ref="meatTextarea" v-model="meatText" title="text"
+    <textarea class="meat-block-textarea" v-show="meatIsEditing" ref="meatTextarea" v-model="meatRaw" title="text"
               @keydown.shift.enter="onShiftEnter()"
               @keydown.enter="onEnter()"
     >
@@ -24,15 +24,15 @@ marked.setOptions({
 
 export default {
   name: 'MeatBlock',
-  props: ['meat'],
+  props: ['meat', 'meatInd'],
   computed: {
-    meatText: {
+    meatRaw: {
       get () {
-        return this.meat['text']
+        return this.meat['raw']
       },
       set (v) {
         if (this.meatIsEditing) {
-          this.meat['text'] = v
+          this.meat['raw'] = v
         }
       }
     },
@@ -52,44 +52,28 @@ export default {
       }
     },
     markedText: function () {
-      return marked(this.meatText)
+      return marked(this.meatRaw)
     }
   },
   methods: {
-    onShiftEnter: function () {
-      window.MathJax.Hub.Queue([
-        'Typeset',
-        window.MathJax.Hub
-      ])
+    onShiftEnter () {
+      this.renderMathJax()
       this.meatIsEditing = false
       this.save()
+      this.$emit('newBlock', this.meatInd)
     },
-    onEnter () {
+    onCtrlEnter () {
+
     },
     onDoubleClick: function () {
       this.meatIsEditing = true
       this.save()
     },
     save () {
-      this.$emit('save', this.meat.name)
+      this.$emit('save', this.meatInd)
     },
     renderMathJax () {
       if (window.MathJax) {
-        window.MathJax.Hub.Config({
-          tex2jax: {
-            inlineMath: [['$', '$']],
-            displayMath: [['$$', '$$']],
-            processEscapes: true,
-            processEnvironments: true
-          },
-          // Center justify equations in code and markdown cells. Elsewhere
-          // we use CSS to left justify single line equations in code cells.
-          displayAlign: 'center',
-          'HTML-CSS': {
-            styles: {'.MathJax_Display': {margin: 0}},
-            linebreaks: {automatic: true}
-          }
-        })
         window.MathJax.Hub.Queue([
           'Typeset',
           window.MathJax.Hub,
@@ -103,21 +87,13 @@ export default {
     }
   },
   watch: {
-    meatText () {
+    markedText () {
       this.save()
-      this.renderMathJax()
     }
-  },
-  mounted () {
-    this.renderMathJax()
   },
   updated () {
     this.resizeTextarea()
-  },
-  data () {
-    return {
-      textHistory: []
-    }
+    this.renderMathJax()
   }
 }
 </script>

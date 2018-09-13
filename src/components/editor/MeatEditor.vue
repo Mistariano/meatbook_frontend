@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="meat-edit-area">
-      <div v-for="meat in meatbook" :key="meat.id">
-        <MeatBlock :meat="meat" @save="onSave"></MeatBlock>
+      <div v-for="(meat,key) in meatbook" v-if="meat.type==='block'" :key="meat.order">
+        <MeatBlock :meat="meat" :meat-ind="key" @save="onSave" @newBlock="onNewBlock"></MeatBlock>
       </div>
     </div>
   </div>
@@ -17,7 +17,7 @@ export default {
   props: ['meatbook_name'],
   data () {
     return {
-      meatbook: [{text: '# test\n\n$\\iint$', is_editing: true}, {text: '# test 2\n$$ \\oint $$', is_editing: false}]
+      meatbook: [{type: 'block', order: '0', raw: 'test\\n\\n$$\\int$$', is_editing: true}]
     }
   },
   mounted () {
@@ -28,11 +28,13 @@ export default {
       })
   },
   methods: {
-    onSave (meatName) {
-      this.$axios.post('/api/meatbook/' + this.meatbook_name + '/', this.meatbook[meatName])
+    onSave (meatInd) {
+      this.$axios.post('/api/meatbook/' + this.meatbook_name + '/', {'ind': meatInd, 'data': this.meatbook[meatInd]})
+    },
+    onNewBlock (meatInd) {
+      alert(meatInd)
     }
-  },
-  watch: {}
+  }
 }
 </script>
 
